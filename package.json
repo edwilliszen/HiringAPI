@@ -1,0 +1,18 @@
+{
+  "name": "hiringAPI",
+  "version": "1.0.0",
+  "description": "API for hiring panel interview",
+  "main": "handler.js",
+  "scripts": {
+    "login": "saml2aws login --force",
+    "deploy": "serverless deploy -r us-west-2 -v --aws-profile saml --aws-s3-accelerate",
+    "deployo": "serverless deploy -r us-west-2 -v --aws-profile saml -f getOrders",    
+    "testo": "serverless invoke local --aws-profile saml -f getOrders -p events/getOrders.json",
+    "testm": "serverless invoke local --aws-profile saml -f getOrders -p events/getOrdersMissingUserId.json"   
+  },
+  "author": "Ed Willis",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.1370.0"
+  }
+}

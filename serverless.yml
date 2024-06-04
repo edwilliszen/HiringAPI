@@ -1,0 +1,38 @@
+service: hiring-api
+
+provider:
+  name: aws
+  # Function global params
+  runtime: nodejs16.x
+  logRetentionInDays: 30
+  memorySize: 3008
+  timeout: 30
+  region: ${opt:region, 'us-west-2'} # Overwrite the default region used. Default is now us-west-2 (Oregon)
+  apiGateway:
+    shouldStartNameWithService: true  
+  profile: saml  
+  environment:
+    region: ${self:provider.region}  
+  logs:
+    restApi: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"        
+      Resource: "*" # TODO tighten up
+package:
+  exclude:
+    - node_modules/aws-sdk/**
+
+functions:
+  getOrders:
+    handler: handler.getOrders
+    description: getOrders
+    runtime: nodejs16.x
+    events:      
+      - http:
+          path: orders
+          method: get
+          cors: true 
